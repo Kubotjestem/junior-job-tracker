@@ -9,37 +9,28 @@ import re
 data_list = {}
 
 def save_to_list(today, all_offers, junior_offers):
-    # Sprawdź, czy mamy już dwie oferty dla dzisiejszej daty
     if today in data_list and len(data_list[today]) >= 2:
         print(f'Two duplicates already exist for {today}. Skipping...')
         return
 
-    # Dodaj oferty do słownika
     data_list.setdefault(today, []).extend([all_offers, junior_offers])
 
     print(f'Data for {today} was added to the list')
 
 def job_counter(url):
     try:
-        # Inicjalizacja przeglądarki
         driver = webdriver.Chrome()
-
-        # Otwarcie strony
         driver.get(url)
 
-        # Oczekiwanie na załadowanie zawartości
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'MuiTab-iconWrapper'))
         )
-        # Pobranie źródła strony
-        page_source = driver.page_source
 
+        page_source = driver.page_source
         soup = BeautifulSoup(page_source, 'html.parser')
 
-        # Znalezienie elementu, który chcesz znaleźć
         jobs_num_element = soup.find('span', {'class': 'MuiTab-iconWrapper'})
 
-        # Sprawdzenie, czy element został znaleziony
         if jobs_num_element:
             number_match = re.search(r'\d+', jobs_num_element.text.strip())
 
@@ -56,7 +47,6 @@ def job_counter(url):
         print(f"Error occurred: {e}")
         return None
     finally:
-        # Zamknięcie przeglądarki
         driver.quit()
 
 # Przykładowe użycie
@@ -67,14 +57,14 @@ result_all = job_counter(url_all)
 result_junior = job_counter(url_junior)
 
 if result_all is not None:
-    print(f"Number of job offers is {url_all}: {result_all}")
+    print(f"Number of job offers at {url_all}: {result_all}")
 else:
-    print(f"I can't find any numbers for {url_all} sorry :(")
-
+    print(f"I can't find any numbers for {url_all}.")
+    
 if result_junior is not None:
-    print(f"Number of job offers is {url_junior}: {result_junior}")
+    print(f"Number of job offers at {url_junior}: {result_junior}")
 else:
-    print(f"I can't find any numbers for {url_junior} sorry :(")
+    print(f"I can't find any numbers for {url_junior}.")
 
 # Zapis do słownika data_list
 today = datetime.today().strftime('%Y-%m-%d')
@@ -86,5 +76,3 @@ for date, offers in data_list.items():
     print(f"{date}: {offers}")
 
 
-#TO DO 
-#DODAJ OPCJE KTORA BEDZIE WYSWIETLALA DZIENNA ZMIANE LICZBY OFERT, NP +2 ALBO -10 WZGLEDEM DNIA POPRZEDNIEGO 
