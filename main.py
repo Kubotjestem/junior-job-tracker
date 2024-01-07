@@ -60,7 +60,7 @@ if result_all is not None:
     print(f"Number of job offers at {url_all}: {result_all}")
 else:
     print(f"I can't find any numbers for {url_all}.")
-    
+
 if result_junior is not None:
     print(f"Number of job offers at {url_junior}: {result_junior}")
 else:
@@ -74,5 +74,12 @@ save_to_list(today, result_all, result_junior)
 print("Contents of data_list:")
 for date, offers in data_list.items():
     print(f"{date}: {offers}")
+
+# Zapis do pliku tekstowego
+file_path = r'C:\Users\Admin\Desktop\job tracker\data.txt'
+with open(file_path, 'a') as file:
+    file.write(f"{today}: {result_all}, {result_junior}\n")
+
+
 
 
