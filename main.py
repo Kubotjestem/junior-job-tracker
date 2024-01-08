@@ -1,3 +1,4 @@
+import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -76,10 +77,17 @@ for date, offers in data_list.items():
     print(f"{date}: {offers}")
 
 # Zapis do pliku tekstowego
-file_path = r'C:\Users\Admin\Desktop\job tracker\data.txt'
+file_path = 'data.txt'
+
+# Check if file exists, if not, create a new one
+if not os.path.exists(file_path):
+    with open(file_path, 'w') as file:
+        print(f'Created new file at {file_path}')
+else:
+    print(f'File already exists at {file_path}')
+
+# Append data to the file
 with open(file_path, 'a') as file:
     file.write(f"{today}: {result_all}, {result_junior}\n")
-
-
 
 
